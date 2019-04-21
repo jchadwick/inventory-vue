@@ -1,3 +1,13 @@
+/** helper function to reate an asynchronous action with a fake network delay */
+function fakeNetworkCall(action) {
+  return new Promise(done => {
+    setTimeout(
+      () => done(action()),
+      Math.random() * 2000 // delay from 0-2 seconds
+    );
+  });
+}
+
 const StorageKey = "Inventory";
 
 class InventoryStore {
@@ -28,13 +38,53 @@ class InventoryStore {
    * @returns the updated item
    */
   addItem(item) {
-    item.trackingNumber = Math.random().toString(36).substr(2, 9);
+    item.trackingNumber = Math.random()
+      .toString(36)
+      .substr(2, 9);
 
     this._items.push(item);
 
     this._save();
 
     return item;
+  }
+
+  validateItem(item) {
+    let errors = [];
+
+    function addError(field, message) {
+      errors.push({ field, message });
+    }
+
+    if (item == null) {
+      addError("", "item is null");
+    }
+
+    if (!item.type) {
+      addError("type", "item must have a valid type");
+    }
+
+    if (!item.name || item.name.length < 5) {
+      addError("name", "item name must be greater then 5 characters long");
+    }
+
+    if (!item.assignedTo || item.assignedTo.length < 1) {
+      addError("assignedTo", "item must be assigned to someone");
+    }
+
+    switch (item.type) {
+      case "computer":
+        if (item.year > new Date().getFullYear()) {
+          addError("name", "item year cannot be in the future");
+        }
+
+        if (!item.serialNumber || item.serialNumber.length < 1) {
+          addError("serialNumber", "item must have a valid serial number");
+        }
+        break;
+    }
+
+    return errors;
   }
 
   /**
@@ -45,7 +95,7 @@ class InventoryStore {
    */
   removeItem(item) {
     this._items.splice(this._items.findIndex(item), 1);
-    this._save();
+    return this._save();
   }
 
   //#region Private methods
@@ -60,10 +110,9 @@ class InventoryStore {
    * @private  <-- just information, doesn't actually make it private
    */
   _load() {
-    new Promise(done => {
+    return fakeNetworkCall(() => {
       const cachedItems = localStorage.getItem(StorageKey) || "[]";
       this._items = JSON.parse(cachedItems);
-      done();
     });
   }
 
@@ -72,15 +121,13 @@ class InventoryStore {
    * @private  <-- just information, doesn't actually make it private
    */
   _save() {
-    new Promise(done => {
-      localStorage.setItem(StorageKey, JSON.stringify(this._items));
-      done();
-    });
+    return fakeNetworkCall(() =>
+      localStorage.setItem(StorageKey, JSON.stringify(this._items))
+    );
   }
 
   //#endregion
 }
-
 // Create a "static" singleton instance for the entire application to use
 InventoryStore.instance = new InventoryStore();
 

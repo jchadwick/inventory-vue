@@ -2,11 +2,12 @@ import inventoryStore from "./inventoryStore.js";
 import router from "./router.js";
 import testData from "./testData.js";
 
-
+// initialize the test data if it doesn't exist
 if(inventoryStore.items.length === 0) {
   testData.map(item => inventoryStore.addItem(item));
 }
 
+// initialize the app
 new Vue({
   el: "#app",
   components: { router },

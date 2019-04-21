@@ -1,0 +1,20 @@
+.inventory-list {
+  width: 20em;
+}
+
+.inventory-list .list-group-item:first-child {
+  border-top-right-radius: 0;
+}
+.inventory-list .list-group-item:last-child {
+  border-bottom-right-radius: 0;
+}
+
+.inventory-panel {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 0;
+  }
+  

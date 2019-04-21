@@ -1,0 +1,15 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css");
+@import url("pages/add-item.css");
+@import url("pages/inventory.css");
+@import url("pages/home.css");
+
+.flex {
+  display: flex;
+}
+.grow {
+  flex-grow: 1;
+}
+
+.title {
+  margin-bottom: 1em;
+}

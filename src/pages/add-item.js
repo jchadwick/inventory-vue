@@ -15,12 +15,16 @@ export default Vue.extend({
   }),
   computed: {
     canSubmit() {
+      // must at least set a name, assigned to, and type
       return this.item.name && this.item.assignedTo && this.item.type;
     }
   },
   methods: {
     onSubmit() {
-      if (!this.canSubmit) {
+      const errors = inventoryStore.validateItem(this.item);
+      this.errors.splice(0, Infinity, ...errors);
+
+      if (this.errors.length) {
         return false;
       }
 
@@ -39,8 +43,8 @@ export default Vue.extend({
         <div v-if="errors.length">
           <p>Please correct the following error(s):</p>
           <ul>
-            <li v-for="error in errors">
-              {{ error }}
+            <li class="error" v-for="error in errors">
+              <span>{{ error.message }}</span>
             </li>
           </ul>
         </div>
