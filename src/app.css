@@ -2,6 +2,15 @@
 @import url("add-item/add-item.css");
 @import url("inventory/inventory.css");
 
+body {
+  width: 80%;
+  margin: auto;
+}
+
+#main-content {
+
+}
+
 .flex {
   display: flex;
 }

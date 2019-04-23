@@ -53,6 +53,9 @@ export default Vue.extend({
       this.item = {};
       this.errors = [];
       this.showErrors = false;
+    },
+    hasError(field) {
+      return !!this.errors.find(x => x.field === field);
     }
   },
   template: `
@@ -117,12 +120,12 @@ export default Vue.extend({
             <div v-if="item.subCategory">
               <div class="col-sm-6 form-group">
                   <label for="item-name">Name</label>
-                  <input name="item-name" type="text"class="form-control" v-model="item.name" />
+                  <input name="item-name" type="text" class="form-control" v-model="item.name" />
               </div>
 
               <div class="col-sm-6 form-group">
                   <label for="item-assigned-to">Assigned To</label>
-                  <input name="item-assigned-to" type="text"class="form-control" v-model="item.assignedTo" />
+                  <input name="item-assigned-to" type="text" class="form-control" v-model="item.assignedTo"  />
               </div>
 
               <inventory-editor :item="item" :category="category"></inventory-editor>

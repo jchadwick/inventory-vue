@@ -4,7 +4,9 @@
 }
 
 .inventory-list {
-  width: 20em;
+  width: 30%;
+  min-width: 30%;
+  max-width: 30%;
 }
 
 .inventory-list .list-group-item:first-child {
@@ -35,4 +37,10 @@
   
   .add-item.btn {
     margin: .5em;
+  }
+
+  .inventory-panel label {
+    width: 8em;
+    padding-right: 1em;
+    text-align: right;
   }

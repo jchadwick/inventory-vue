@@ -1,7 +1,22 @@
 import inventoryStore from "../inventoryStore.js";
+import inventoryDetails from "./inventoryDetails.js";
 
 const InventoryList = Vue.extend({
   props: ["selectedItem", "inventory"],
+  methods: {
+    getIcon(item) {
+      switch (item.type) {
+        case "computer":
+          return "fa-desktop";
+
+        case "furniture":
+          return "fa-chair";
+
+        default:
+          return "fa-dolly-flatbed";
+      }
+    }
+  },
   template: `
     <div class="inventory-list list-group">
       <a class="list-group-item"
@@ -9,36 +24,15 @@ const InventoryList = Vue.extend({
         @click="$emit('item-selected', item)"
         :class="{ active: selectedItem && selectedItem.trackingNumber == item.trackingNumber }"
       >
+        <i class="fas" :class="getIcon(item)"></i>
         {{ item.name }}
-        <i @click.stop="$emit('item-deleted', item)" class="delete pull-right glyphicon glyphicon-remove-sign" title="delete"></i>
       </a>
     </div>
   `
 });
 
-const InventoryItemDetails = Vue.extend({
-  props: { item: Object },
-  template: `
-    <div v-if="item">
-      <div class="inventory-panel panel panel-default">
-        <div class="panel-heading">{{ item.name }}</div>
-        <div class="panel-body">
-          <p>
-            <label>Tracking Number:</label>
-            {{ item.trackingNumber }}
-          </p>
-          <p>
-            <label>Assigned to:</label>
-            {{ item.assignedTo }}
-          </p>
-        </div>
-      </div>
-    </div>
-  `
-});
-
 export default Vue.extend({
-  components: { InventoryList, InventoryItemDetails },
+  components: { InventoryList, inventoryDetails },
   data: () => ({
     inventory: inventoryStore.items,
     selectedItem: null
@@ -67,14 +61,19 @@ export default Vue.extend({
           :inventory="inventory" 
           :selectedItem="selectedItem" 
           @item-selected="selectedItem = $event"
-          @item-deleted="deleteItem($event)"
         />
 
-        <inventory-item-details  
-          class="grow full-height" 
-          :item="selectedItem" 
-        />
-
+        <div v-if="selectedItem" class="grow full-height">
+          <div class="inventory-panel panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title col-xs-10">{{ selectedItem.name }}</h3>
+              <button @click.stop="deleteItem(selectedItem)" class="pull-right btn btn-xs btn-danger">Delete</button>
+            </div>
+            <div class="panel-body">
+              <inventory-details :item="selectedItem" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   `

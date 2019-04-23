@@ -24,7 +24,7 @@ export default Vue.extend({
   
           <div class="col-sm-3 form-group">
               <label for="item-serial-number">Serial Number</label>
-              <input name="item-serial-number" type="text"class="form-control" v-model="item.serialNumber" />
+              <input name="item-serial-number" type="text" class="form-control" v-model="item.serialNumber" />
           </div>
   
       </div>

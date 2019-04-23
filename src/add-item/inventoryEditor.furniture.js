@@ -10,12 +10,12 @@ export default Vue.extend({
   
           <div class="col-sm-6 form-group">
               <label for="item.manufacturer">Manufacturer</label>
-              <input name="item.manufacturer" type="text"class="form-control" v-model="item.manufacturer" />
+              <input name="item.manufacturer" type="text" class="form-control" v-model="item.manufacturer" />
           </div>
   
           <div class="col-sm-6 form-group">
               <label for="item.model">Model / Serial Number / Description</label>
-              <input name="item.model" type="text"class="form-control" v-model="item.model" />
+              <input name="item.model" type="text" class="form-control" v-model="item.model" />
           </div>
   
           <div class="col-sm-3 form-group">

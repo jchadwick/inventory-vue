@@ -6,15 +6,18 @@ const MainContent = () => ({
   component: inventoryStore.isLoaded.then(() => ({
     components: { router },
     template: `
-      <router>
-        <template #loading>
-          <p>Loading...</p>
-        </template>
+      <div id="main-content">
+        <router>
+          <template #loading>
+            <p>Loading...</p>
+          </template>
 
-        <template #notFound>
-          <h1>Page Not Found</h1>
-        </template>
-      </router>`
+          <template #notFound>
+            <h1>Page Not Found</h1>
+          </template>
+        </router>
+      </div>
+    `
   })),
 });
 
