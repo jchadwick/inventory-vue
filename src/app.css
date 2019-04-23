@@ -12,3 +12,9 @@
 .title {
   margin-bottom: 1em;
 }
+
+.loading {
+  font-size: 150%;
+  padding-top: 50%;
+  text-align: center;
+}

@@ -1,7 +1,5 @@
 import storage from "./Storage.js";
 
-const InventoryItemsStorageKey = "Inventory";
-
 class InventoryStore {
   /** the inventory categories */
   get categories() {
@@ -102,22 +100,22 @@ class InventoryStore {
       // Computer-specific validation
       case "computer":
         if (item.year > new Date().getFullYear()) {
-          addError("name", "item year cannot be in the future");
+          addError("name", "Please select a year (future years are not valid)");
         }
 
-        if (isNullOrEmpty(item.serialNumber)) {
-          addError("serialNumber", "item must have a valid serial number");
+        if (!item.serialNumber) {
+          addError("serialNumber", "Please specify a valid serial number");
         }
         break;
 
       // Furniture-specific validation
       case "furniture":
-        if (isNullOrEmpty(item.category)) {
-          addError("category", "item must have a category");
+        if (!item.model) {
+          addError("model", "Please provide a model, serial number, or description");
         }
 
-        if (isNullOrEmpty(item.manufacturer)) {
-          addError("manufacturer", "item must have a manufacturer");
+        if (!item.manufacturer) {
+          addError("manufacturer", "Please identify the item's manufacturer");
         }
         break;
     }
@@ -154,7 +152,7 @@ class InventoryStore {
   _load() {
     return Promise.all([
       storage.get("Categories").then(categories => this._categories = categories),
-      storage.get(InventoryItemsStorageKey).then(items => this._items = items),
+      storage.get("Inventory").then(items => this._items = items),
     ]).then(() => true);
   }
 
@@ -166,18 +164,11 @@ class InventoryStore {
    * @private  <-- just information, doesn't actually do anything at runtim
    */
   _save() {
-    return storage.save(InventoryItemsStorageKey, this._items);
+    return storage.save("Inventory", this._items);
   }
 
   //#endregion
 }
-
-/**
- * checks to see if a string value is null or empty (true) or not (false)
- * @param {string} value the value to evaluate
- * @returns {boolean} `true` if value is null or empty, or `false` if not
- */
-const isNullOrEmpty = value => !value || value.length < 1;
 
 // Create a "static" singleton instance for the entire application to use
 InventoryStore.instance = new InventoryStore();

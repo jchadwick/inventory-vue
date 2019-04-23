@@ -5,14 +5,13 @@ const InventoryList = Vue.extend({
   template: `
     <div class="inventory-list list-group">
       <a class="list-group-item"
-        v-on:click="$emit('item-selected', item)"
         v-for="item in inventory"
-        v-bind:class="{ active: selectedItem && selectedItem.trackingNumber == item.trackingNumber }"
+        @click="$emit('item-selected', item)"
+        :class="{ active: selectedItem && selectedItem.trackingNumber == item.trackingNumber }"
       >
         {{ item.name }}
+        <i @click.stop="$emit('item-deleted', item)" class="delete pull-right glyphicon glyphicon-remove-sign" title="delete"></i>
       </a>
-
-      <button @click.prevent="$emit('add-new-item')" class="add-item btn btn-primary">Add New Item</button>
     </div>
   `
 });
@@ -41,20 +40,26 @@ const InventoryItemDetails = Vue.extend({
 export default Vue.extend({
   components: { InventoryList, InventoryItemDetails },
   data: () => ({
-    inventory: [],
+    inventory: inventoryStore.items,
     selectedItem: null
   }),
   methods: {
-    addNewItem() {
-      window.location.hash = "#/add-item";
+    deleteItem(item) {
+      inventoryStore.removeItem(item);
     }
   },
   mounted() {
-    this.inventory = inventoryStore.items;
+    if (this.inventory.length) {
+      this.selectedItem = this.inventory[0];
+    }
   },
   template: `
     <div>
       <h2 class="title">Current Inventory</h2>
+
+      <div class="menu-bar text-right">
+        <a href="#/add-item" class="add-item btn btn-sm btn-primary">Add New Item</a>
+      </div>
 
       <div class="flex">
       
@@ -62,7 +67,7 @@ export default Vue.extend({
           :inventory="inventory" 
           :selectedItem="selectedItem" 
           @item-selected="selectedItem = $event"
-          @add-new-item="addNewItem"
+          @item-deleted="deleteItem($event)"
         />
 
         <inventory-item-details  
