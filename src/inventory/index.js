@@ -11,6 +11,8 @@ const InventoryList = Vue.extend({
       >
         {{ item.name }}
       </a>
+
+      <button @click.prevent="$emit('add-new-item')" class="add-item btn btn-primary">Add New Item</button>
     </div>
   `
 });
@@ -39,9 +41,17 @@ const InventoryItemDetails = Vue.extend({
 export default Vue.extend({
   components: { InventoryList, InventoryItemDetails },
   data: () => ({
-    inventory: inventoryStore.items,
+    inventory: [],
     selectedItem: null
   }),
+  methods: {
+    addNewItem() {
+      window.location.hash = "#/add-item";
+    }
+  },
+  mounted() {
+    this.inventory = inventoryStore.items;
+  },
   template: `
     <div>
       <h2 class="title">Current Inventory</h2>
@@ -51,7 +61,8 @@ export default Vue.extend({
         <inventory-list 
           :inventory="inventory" 
           :selectedItem="selectedItem" 
-          @item-selected="selectedItem = $event" 
+          @item-selected="selectedItem = $event"
+          @add-new-item="addNewItem"
         />
 
         <inventory-item-details  

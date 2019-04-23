@@ -1,17 +1,18 @@
-function getCurrentRoute() {
-  return window.location.hash.replace(/^#\//, "");
-}
-
 export default Vue.extend({
   data: () => ({
     currentRoute: null,
     ViewComponent: null
   }),
+  methods: {
+    syncRoute() {
+      this.currentRoute = window.location.hash.replace(/^#\//, "");
+    }
+  },
   watch: {
     currentRoute() {
       this.ViewComponent = "loading";
 
-      import(`./pages/${this.currentRoute || "home"}.js`)
+      import(`./${this.currentRoute || "inventory"}/index.js`)
         .then(x => (this.ViewComponent = x.default))
         .catch(err => {
           console.warn(err);
@@ -19,10 +20,9 @@ export default Vue.extend({
         });
     }
   },
-  mounted() {
-    const syncRoute = () => (this.currentRoute = getCurrentRoute());
-    window.addEventListener("hashchange", syncRoute);
-    syncRoute();
+  created() {
+    window.addEventListener("hashchange", this.syncRoute);
+    this.syncRoute();
   },
   render(h) {
     const vc = this.ViewComponent;
