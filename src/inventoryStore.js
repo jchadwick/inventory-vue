@@ -111,7 +111,10 @@ class InventoryStore {
       // Furniture-specific validation
       case "furniture":
         if (!item.model) {
-          addError("model", "Please provide a model, serial number, or description");
+          addError(
+            "model",
+            "Please provide a model, serial number, or description"
+          );
         }
 
         if (!item.manufacturer) {
@@ -151,8 +154,10 @@ class InventoryStore {
    */
   _load() {
     return Promise.all([
-      storage.get("Categories").then(categories => this._categories = categories),
-      storage.get("Inventory").then(items => this._items = items),
+      storage
+        .get("Categories")
+        .then(categories => (this._categories = categories)),
+      storage.get("Inventory").then(items => (this._items = items))
     ]).then(() => true);
   }
 

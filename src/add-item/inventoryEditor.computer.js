@@ -1,10 +1,10 @@
 export default Vue.extend({
-    props: ["item"],
-    data: () => ({
-        minYear: 2010,
-        maxYear: new Date().getFullYear()
-    }),
-    template: `
+  props: ["item"],
+  data: () => ({
+    minYear: 2010,
+    maxYear: new Date().getFullYear()
+  }),
+  template: `
       <div>
   
           <div class="col-sm-3 form-group">

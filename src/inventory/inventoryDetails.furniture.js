@@ -1,8 +1,6 @@
-
-
 export default Vue.extend({
-    props: ["item"],
-    template: `
+  props: ["item"],
+  template: `
         <div>
         <div class="col-sm-6">
                 <label>Tracking #</label>
@@ -30,4 +28,4 @@ export default Vue.extend({
             </div>
         </div>
     `
-})
+});

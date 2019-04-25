@@ -15,7 +15,7 @@ const testData = {
         { name: "desktop", displayName: "Desktop" },
         { name: "tablet", displayName: "Tablet" },
         { name: "mobile", displayName: "Mobile Device" },
-        { name: "other", displayName: "Other" },
+        { name: "other", displayName: "Other" }
       ]
     },
     {
@@ -25,7 +25,7 @@ const testData = {
         { name: "chair", displayName: "Chair" },
         { name: "desk", displayName: "Desk" },
         { name: "storage", displayName: "Storage" },
-        { name: "other", displayName: "Other" },
+        { name: "other", displayName: "Other" }
       ],
       colors: ["Brown", "Black", "White", "Biege", "Silver", "Other"]
     }
@@ -39,7 +39,7 @@ const testData = {
       year: 2010,
       brand: "Dell",
       model: "Latitude 5100",
-      serialNumber: "DELL12344",
+      serialNumber: "DELL12344"
     },
     {
       type: "computer",
@@ -49,7 +49,7 @@ const testData = {
       year: 2018,
       brand: "Apple",
       model: "MacBook Pro 15",
-      serialNumber: "APPL143223",
+      serialNumber: "APPL143223"
     },
     {
       type: "computer",
@@ -59,7 +59,7 @@ const testData = {
       year: 2016,
       brand: "Microsoft",
       model: "Surface Book",
-      serialNumber: "MS19412412",
+      serialNumber: "MS19412412"
     },
     {
       type: "furniture",
@@ -69,7 +69,7 @@ const testData = {
       manufacturer: "Actistand",
       model: "StandMaster 2000 - ACTSTA20fdas00350vm",
       material: "Wood / Metal",
-      color: "Black",
+      color: "Black"
     },
     {
       type: "furniture",
@@ -79,7 +79,7 @@ const testData = {
       manufacturer: "Actistand",
       model: "StandMaster 2000 - ACTSTA20fdas5532ff",
       material: "Wood / Metal",
-      color: "White",
+      color: "White"
     },
     {
       type: "furniture",
@@ -89,7 +89,7 @@ const testData = {
       manufacturer: "Execu-Pro",
       model: "Executive PowerDesk 8000 - EXECUPR0029599502",
       material: "Unobtanium",
-      color: "Silver",
+      color: "Silver"
     },
     {
       type: "furniture",
@@ -99,7 +99,7 @@ const testData = {
       manufacturer: "Execu-Pro",
       model: "Executive PowerChair 8000 - EXECUPRC002lvf925",
       material: "Unobtanium / Plastic",
-      color: "Silver",
+      color: "Silver"
     }
   ]
 };

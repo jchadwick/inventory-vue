@@ -37,12 +37,13 @@ export default Vue.extend({
     onSubmit() {
       this.saving = true;
 
-      inventoryStore.addItem(this.item)
+      inventoryStore
+        .addItem(this.item)
         .then(() => {
           this.reset();
           this.showSavedMessage = true;
           this.saving = false;
-          setTimeout(() => this.showSavedMessage = false, 4000);
+          setTimeout(() => (this.showSavedMessage = false), 4000);
         })
         .catch(errors => {
           this.errors.splice(0, Infinity, ...errors);

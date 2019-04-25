@@ -18,7 +18,7 @@ const MainContent = () => ({
         </router>
       </div>
     `
-  })),
+  }))
 });
 
 const router = Vue.extend({
