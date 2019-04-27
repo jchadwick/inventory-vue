@@ -50,7 +50,10 @@ class InventoryStore {
       .toString(36)
       .substr(2, 9);
 
+    const assignedDate = moment.utc().format();
+
     item.trackingNumber = trackingNumber;
+    item.assignedDate = assignedDate;
 
     this._items.push(item);
 

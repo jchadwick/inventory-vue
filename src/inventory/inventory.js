@@ -40,6 +40,10 @@ export default Vue.extend({
   methods: {
     deleteItem(item) {
       inventoryStore.removeItem(item);
+    },
+    resetTestData() {
+      localStorage.clear();
+      window.location.reload();
     }
   },
   mounted() {
@@ -52,7 +56,10 @@ export default Vue.extend({
       <h2 class="title">Current Inventory</h2>
 
       <div class="menu-bar text-right">
-        <a href="#/add-item" class="add-item btn btn-sm btn-primary">Add New Item</a>
+        <a href="#/add-item" class="add-item btn btn-sm btn-primary">
+          <i class="fas fa-plus-circle"></i>
+          Add New Item
+        </a>
       </div>
 
       <div class="flex">
@@ -67,13 +74,23 @@ export default Vue.extend({
           <div class="inventory-panel panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title col-xs-10">{{ selectedItem.name }}</h3>
-              <button @click.stop="deleteItem(selectedItem)" class="pull-right btn btn-xs btn-danger">Delete</button>
+              <button @click.stop="deleteItem(selectedItem)" class="pull-right btn btn-xs btn-danger">
+                <i class="fas fa-times-circle"></i>
+                Delete
+              </button>
             </div>
             <div class="panel-body">
               <inventory-details :item="selectedItem" />
             </div>
           </div>
         </div>
+      </div>
+
+      <div class="text-right" style="margin-top: 10px">
+        <a @click.stop="resetTestData" class="btn btn-xs btn-warning">
+          <i class="fas fa-radiation-alt"></i>
+          Reset Test Data
+        </a>
       </div>
     </div>
   `
