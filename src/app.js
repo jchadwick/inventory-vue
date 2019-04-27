@@ -3,7 +3,7 @@ import inventoryStore from "./inventoryStore.js";
 const MainContent = () => ({
   delay: 200,
   loading: { template: `<loading />` },
-  component: inventoryStore.isLoaded.then(() => ({
+  component: inventoryStore.isInitialized.then(() => ({
     components: { router },
     template: `
       <div id="main-content">

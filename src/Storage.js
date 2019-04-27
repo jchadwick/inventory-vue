@@ -1,30 +1,25 @@
-import { initializeTestData } from "./testData.js";
+/**
+ * Retrieves data from storage
+ */
+function getFromStorage(key) {
+  return __delay(() => {
+    const serialized = localStorage.getItem(key) || "";
+    return JSON.parse(serialized);
+  });
+}
 
-/** General-purpose storage mechanism */
-export class Storage {
-  /**
-   * Retrieves data from storage
-   */
-  get(key) {
-    return delay(() => {
-      const serialized = localStorage.getItem(key) || "";
-      return JSON.parse(serialized);
-    });
-  }
-
-  /**
-   * Save data to storage
-   */
-  save(key, data) {
-    return delay(() => {
-      const serialized = JSON.stringify(data);
-      localStorage.setItem(key, serialized);
-    });
-  }
+/**
+ * Save data to storage
+ */
+function saveToStorage(key, data) {
+  return __delay(() => {
+    const serialized = JSON.stringify(data);
+    localStorage.setItem(key, serialized);
+  });
 }
 
 /** helper function to introduce a random delay to simulate network conditions */
-function delay(action) {
+function __delay(action) {
   return new Promise(done => {
     setTimeout(
       () => done(action()),
@@ -32,7 +27,3 @@ function delay(action) {
     );
   });
 }
-
-initializeTestData();
-
-export default new Storage();

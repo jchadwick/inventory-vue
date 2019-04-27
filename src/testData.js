@@ -1,10 +1,3 @@
-export const initializeTestData = () =>
-  Object.keys(testData).forEach(key => {
-    if (localStorage.getItem(key) == null) {
-      localStorage.setItem(key, JSON.stringify(testData[key]));
-    }
-  });
-
 const testData = {
   Categories: [
     {
@@ -104,4 +97,10 @@ const testData = {
   ]
 };
 
-export default testData;
+(function initializeTestData(testData) {
+  Object.keys(testData).forEach(key => {
+    if (localStorage.getItem(key) == null) {
+      localStorage.setItem(key, JSON.stringify(testData[key]));
+    }
+  });
+})(testData);

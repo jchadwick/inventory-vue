@@ -1,5 +1,3 @@
-import storage from "./Storage.js";
-
 class InventoryStore {
   /** the inventory categories */
   get categories() {
@@ -11,8 +9,9 @@ class InventoryStore {
     return this._items;
   }
 
-  get isLoaded() {
-    return this._isLoaded;
+  /** promise indicating whether the store has been initialized */
+  get isInitialized() {
+    return this._isInitialized;
   }
 
   constructor() {
@@ -21,7 +20,7 @@ class InventoryStore {
     this._items = [];
 
     // load initial set of data
-    this._isLoaded = this._load();
+    this._isInitialized = this._load();
   }
 
   /**
@@ -37,7 +36,7 @@ class InventoryStore {
   /**
    * Adds an item to inventory
    *
-   * @param {InventoryItem} item the item to add to inventory   *
+   * @param {InventoryItem} item the item to add to inventory
    * @returns {Promise<InventoryItem>} promise containing the updated item after it's been saved
    */
   addItem(item) {
@@ -129,7 +128,7 @@ class InventoryStore {
   /**
    * Removes an item from inventory
    *
-   * @param {InventoryItem} item the item to remove from inventory   *
+   * @param {InventoryItem} item the item to remove from inventory
    * @returns {Promise<void>} a promise which resolves once the task is complete
    *
    */
@@ -150,15 +149,16 @@ class InventoryStore {
    *
    * @returns {Promise<boolean>} a promise with the loading state
    *
-   * @private  <-- just information, doesn't actually do anything at runtim
+   * @private  <-- just information, doesn't actually do anything at runtime
    */
   _load() {
     return Promise.all([
-      storage
-        .get("Categories")
-        .then(categories => (this._categories = categories)),
-      storage.get("Inventory").then(items => (this._items = items))
-    ]).then(() => true);
+      getFromStorage("Categories"),
+      getFromStorage("Inventory")
+    ]).then(([categories, items]) => {
+      this._categories = categories;
+      this._items = items;
+    });
   }
 
   /**
@@ -166,10 +166,10 @@ class InventoryStore {
    *
    * @returns {Promise<void>} a promise which resolves once the task is complete
    *
-   * @private  <-- just information, doesn't actually do anything at runtim
+   * @private  <-- just information, doesn't actually do anything at runtime
    */
   _save() {
-    return storage.save("Inventory", this._items);
+    return saveToStorage("Inventory", this._items);
   }
 
   //#endregion
