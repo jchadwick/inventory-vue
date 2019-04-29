@@ -1,5 +1,86 @@
-import inventoryStore from "../inventoryStore.js";
-import inventoryDetails from "./inventoryDetails.js";
+const inventoryDetails = Vue.extend({
+  props: ["item"],
+  render(createDetails) {
+    let details = null;
+
+    switch (this.item.type) {
+      case "computer":
+        details = inventoryDetails.computer;
+        break;
+
+      case "furniture":
+        details = inventoryDetails.furniture;
+        break;
+    }
+
+    return createDetails(details, { props: this.$props });
+  }
+});
+
+inventoryDetails.computer = Vue.extend({
+  props: ["item"],
+  template: `
+        <div>
+            <div class="col-sm-6">
+                <label>Tracking #</label>
+                <span>{{item.trackingNumber}}</span>
+            </div>
+
+            <div class="col-sm-6">
+                <label>Assigned To:</label>
+                <span>{{item.assignedTo}}</span>
+            </div>
+
+            <div class="col-sm-6">
+                <label>Brand:</label>
+                <span>{{item.brand}}</span>
+            </div>
+
+            <div class="col-sm-6">
+                <label>Serial #:</label>
+                <span>{{item.serialNumber}}</span>
+            </div>
+           
+            <div class="col-sm-12">
+                <label>Model:</label>
+                <span>{{item.year}} {{item.model}}</span>
+            </div>
+
+        </div>
+    `
+});
+
+inventoryDetails.furniture = Vue.extend({
+  props: ["item"],
+  template: `
+        <div>
+        <div class="col-sm-6">
+                <label>Tracking #</label>
+                <span>{{item.trackingNumber}}</span>
+            </div>
+            <div class="col-sm-6">
+                <label>Assigned To:</label>
+                <span>{{item.assignedTo}}</span>
+            </div>
+            <div class="col-sm-6">
+                <label>Manufacturer</label>
+                <span>{{item.manufacturer}}</span>
+            </div>
+            <div class="col-sm-12">
+                <label>Model</label>
+                <span>{{item.model}}</span>
+            </div>
+            <div class="col-sm-6">
+                <label>Material</label>
+                <span>{{item.material}}</span>
+            </div>
+            <div class="col-sm-6">
+                <label>Color</label>
+                <span>{{item.color}}</span>
+            </div>
+        </div>
+    `
+});
 
 const InventoryList = Vue.extend({
   props: ["selectedItem", "inventory"],
@@ -31,10 +112,10 @@ const InventoryList = Vue.extend({
   `
 });
 
-export default Vue.extend({
+const inventoryPage = Vue.extend({
   components: { InventoryList, inventoryDetails },
   data: () => ({
-    inventory: inventoryStore.items,
+    inventory: null,
     selectedItem: null
   }),
   methods: {
@@ -45,6 +126,9 @@ export default Vue.extend({
       localStorage.clear();
       window.location.reload();
     }
+  },
+  created() {
+    this.inventory = inventoryStore.items;
   },
   mounted() {
     if (this.inventory.length) {

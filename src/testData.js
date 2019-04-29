@@ -29,7 +29,6 @@ const testData = {
       trackingNumber: "0012390421899",
       name: "Michael's Dell Laptop",
       assignedTo: "Michael",
-      assignedDate: moment.utc().format(),
       year: 2010,
       brand: "Dell",
       model: "Latitude 5100",
@@ -40,7 +39,6 @@ const testData = {
       trackingNumber: "gftt4aVxzd",
       name: "Nina's MacBook Pro",
       assignedTo: "Nina",
-      assignedDate: moment.utc().format(),
       year: 2018,
       brand: "Apple",
       model: "MacBook Pro 15",
@@ -51,7 +49,6 @@ const testData = {
       trackingNumber: "42166GVZ",
       name: "Jess's Surface Book",
       assignedTo: "Jess",
-      assignedDate: moment.utc().format(),
       year: 2016,
       brand: "Microsoft",
       model: "Surface Book",
@@ -62,7 +59,6 @@ const testData = {
       trackingNumber: "20fdas00350vm",
       name: "Jess's Standing Desk",
       assignedTo: "Jess",
-      assignedDate: moment.utc().format(),
       manufacturer: "Actistand",
       model: "StandMaster 2000 - ACTSTA20fdas00350vm",
       material: "Wood / Metal",
@@ -73,7 +69,6 @@ const testData = {
       trackingNumber: "as5532ffasvsF",
       name: "Nina's Standing Desk",
       assignedTo: "Nina",
-      assignedDate: moment.utc().format(),
       manufacturer: "Actistand",
       model: "StandMaster 2000 - ACTSTA20fdas5532ff",
       material: "Wood / Metal",
@@ -84,7 +79,6 @@ const testData = {
       trackingNumber: "95995566asvsF",
       name: "Michael's Desk",
       assignedTo: "Michael",
-      assignedDate: moment.utc().format(),
       manufacturer: "Execu-Pro",
       model: "Executive PowerDesk 8000 - EXECUPR0029599502",
       material: "Unobtanium",
@@ -95,7 +89,6 @@ const testData = {
       trackingNumber: "2lvf92UPR00",
       name: "Michael's Chair",
       assignedTo: "Michael",
-      assignedDate: moment.utc().format(),
       manufacturer: "Execu-Pro",
       model: "Executive PowerChair 8000 - EXECUPRC002lvf925",
       material: "Unobtanium / Plastic",
@@ -107,7 +100,10 @@ const testData = {
 (function initializeTestData(testData) {
   Object.keys(testData).forEach(key => {
     if (localStorage.getItem(key) == null) {
+      console.log(`Initializing test data: ${key}`);
       localStorage.setItem(key, JSON.stringify(testData[key]));
     }
   });
+
+  console.log("Initialized test data");
 })(testData);

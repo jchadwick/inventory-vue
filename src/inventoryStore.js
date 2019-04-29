@@ -50,10 +50,7 @@ class InventoryStore {
       .toString(36)
       .substr(2, 9);
 
-    const assignedDate = moment.utc().format();
-
     item.trackingNumber = trackingNumber;
-    item.assignedDate = assignedDate;
 
     this._items.push(item);
 
@@ -181,5 +178,5 @@ class InventoryStore {
 // Create a "static" singleton instance for the entire application to use
 InventoryStore.instance = new InventoryStore();
 
-// Expose the singleton as the default export
-export default InventoryStore.instance;
+// Expose the singleton in its own variable
+const inventoryStore = InventoryStore.instance;

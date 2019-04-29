@@ -1,64 +1,15 @@
-import inventoryStore from "./inventoryStore.js";
+const basePath = "src"
 
-const MainContent = () => ({
-  delay: 200,
-  loading: { template: `<loading />` },
-  component: inventoryStore.isInitialized.then(() => ({
-    components: { router },
-    template: `
-      <div id="main-content">
-        <router>
-          <template #loading>
-            <p>Loading...</p>
-          </template>
+const loadDependencies = () => Promise.all([
+  $.get(`${basePath}/testData.js`),
+  $.get(`${basePath}/storage.js`),
+  $.get(`${basePath}/inventoryStore.js`)
+]);
 
-          <template #notFound>
-            <h1>Page Not Found</h1>
-          </template>
-        </router>
-      </div>
-    `
-  }))
-});
-
-const router = Vue.extend({
-  data: () => ({
-    currentRoute: null,
-    ViewComponent: null
-  }),
-  methods: {
-    syncRoute() {
-      this.currentRoute = window.location.hash.replace(/^#\//, "");
-    }
-  },
-  watch: {
-    currentRoute() {
-      this.ViewComponent = { template: `<loading />` };
-
-      const page = this.currentRoute || "inventory";
-
-      import(`./${page}/${page}.js`)
-        .then(x => (this.ViewComponent = x.default))
-        .catch(err => {
-          console.warn(err);
-          this.ViewComponent = "notFound";
-        });
-    }
-  },
-  created() {
-    window.addEventListener("hashchange", this.syncRoute);
-    this.syncRoute();
-  },
-  render(h) {
-    const vc = this.ViewComponent;
-
-    if (vc == null) {
-      return null;
-    }
-
-    return typeof vc === "string" ? this.$slots[vc] : h(this.ViewComponent);
-  }
-});
+const loadPages = () => Promise.all([
+  $.get(`${basePath}/pages/addItem.js`),
+  $.get(`${basePath}/pages/inventory.js`)
+]);
 
 Vue.component("loading", {
   template: `
@@ -73,15 +24,47 @@ Vue.component("loading", {
   `
 });
 
-// initialize the app
-new Vue({
-  el: "#app",
-  components: { MainContent },
-  template: `
-    <div class="container-fluid">
-        <div class="header clearfix">
-            <h3 class="text-muted">Inventory Management System</h3>
-        </div>
-        <main-content />
-    </div>`
-});
+Vue.component("app", () => ({
+  delay: 200,
+  loading: { template: `<loading />` },
+  component:
+    loadDependencies()
+      .then(() => inventoryStore.isInitialized)
+      .then(loadPages)
+      .then(() => ({
+        data: () => ({
+          inventoryStore: null,
+          currentRoute: null,
+          CurrentPage: null,
+          routes: {
+            "add-item": addItemPage,
+            "inventory": inventoryPage
+          }
+        }),
+        methods: {
+          syncRoute() {
+            this.currentRoute = window.location.hash.replace(/^#\//, "");
+          }
+        },
+        watch: {
+          currentRoute() {
+            const page = this.routes[this.currentRoute];
+            this.CurrentPage = page || inventoryPage;
+          }
+        },
+        created() {
+          this.inventoryStore = inventoryStore;
+          window.addEventListener("hashchange", this.syncRoute);
+          this.syncRoute();
+        },
+        template: `
+          <div class="container-fluid">
+              <div class="header clearfix">
+                  <h3 class="text-muted">Inventory Management System</h3>
+              </div>
+              <component :is="CurrentPage"></component>
+          </div>`
+      }))
+}));
+
+new Vue({ el: "#app", template: `<app/>` });
